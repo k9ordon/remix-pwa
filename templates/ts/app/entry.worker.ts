@@ -164,8 +164,13 @@ function isMethod(request: Request, methods: string[]) {
 }
 
 function isAssetRequest(request: Request) {
-  return isMethod(request, ["get"]) && STATIC_ASSETS.some((publicPath) => request.url.startsWith(publicPath));
-}
+  const url = new URL(request.url);
+  debug('DEBUG - isAssetRequest', url.pathname);
+  return (
+    isMethod(request, ['get']) &&
+    STATIC_ASSETS.some(publicPath => url.pathname.startsWith(publicPath))
+  );
+};
 
 function isLoaderRequest(request: Request) {
   const url = new URL(request.url);
